@@ -42,7 +42,7 @@ public class ModBlocks {
       String id =
           color == null
               ? material.getName() + "_shulker_box"
-              : color.getId() + "_" + material.getName() + "_shulker_box";
+              : color.getName() + "_" + material.getName() + "_shulker_box";
       Block block =
           ModBlocks.register(
               Identifier.fromNamespaceAndPath(namespace, id),
