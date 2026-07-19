@@ -1,5 +1,5 @@
 plugins {
-	id "net.fabricmc.fabric-loom-remap" version "${loom_version}"
+	id "net.fabricmc.fabric-loom" version "${loom_version}"
 	id "maven-publish"
 	id "com.modrinth.minotaur" version "2.+"
 	id 'checkstyle'
@@ -19,6 +19,10 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+
+	// Reinforced Core / Reinforced Chests (locally published; the upstream Aton-Kish maven
+	// only has 1.21.11 builds, so this port resolves both from mavenLocal instead)
+	mavenLocal()
 
 	// Reinforced Storage
 	maven {
@@ -79,29 +83,44 @@ loom {
 	accessWidenerPath = file("src/main/resources/${project.mod_id}.accesswidener")
 }
 
+sourceSets {
+	main {
+		java {
+			// The gametest suite uses the pre-26.2 dynamic gametest-registration mechanism
+			// that reinforced-core dropped for this port (see reinforced-core's
+			// ReinforcedCoreMod for why) and cannot be run/verified headless anyway;
+			// excluded for this port, matching EkagraTheBeast/reinforced-shulker-boxes#107's
+			// own precedent.
+			exclude "atonkish/reinfshulker/gametest/**"
+		}
+	}
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	// Minecraft 26.2 ships an unobfuscated jar; Loom infers this automatically and
+	// errors ("Cannot use Mojang mappings in a non-obfuscated environment") if a
+	// mappings dependency is declared explicitly, so none is declared here.
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Reinforced Core
-	modImplementation "atonkish.reinfcore:reinforced-core:${project.reinforced_core_version}"
+	implementation "atonkish.reinfcore:reinforced-core:${project.reinforced_core_version}"
 	include "atonkish.reinfcore:reinforced-core:${project.reinforced_core_version}"
 
 	// Reinforced Chests
-	modImplementation "atonkish.reinfchest:reinforced-chests:${project.reinforced_chests_version}"
+	implementation "atonkish.reinfchest:reinforced-chests:${project.reinforced_chests_version}"
 
 	// Shulker Box Tooltip
-	modImplementation "com.misterpemodder:shulkerboxtooltip-fabric:${project.shulker_box_tooltip_version}"
+	implementation "com.misterpemodder:shulkerboxtooltip-fabric:${project.shulker_box_tooltip_version}"
 
 	// // Quick Shulker
-	// modImplementation "net.kyrptonaught:quickshulker:${project.quick_shulker_version}"
+	// implementation "net.kyrptonaught:quickshulker:${project.quick_shulker_version}"
 	// // Quick Shulker deps
-	// modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
+	// implementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
 }
 
 processResources {
@@ -113,8 +132,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 21
+	it.options.release = 25
 }
 
 java {
@@ -123,8 +141,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
@@ -212,8 +230,8 @@ task curseforge(type: Exec) {
 			--changelog "[v${project.version}](https://github.com/Aton-Kish/reinforced-shulker-boxes/releases/tag/v${java.net.URLEncoder.encode(project.version, "UTF-8")})" \
 			--environments "Client,Server" \
 			--loaders "Fabric" \
-			--java-versions "Java 21" \
-			--game-versions "1.21.11" \
+			--java-versions "Java 25" \
+			--game-versions "26.2" \
 			--dependencies "fabric-api=required,cloth-config=embedded,modmenu=optional,shulkerboxtooltip=optional,reinforced-chests=optional"
 	"""
 }
@@ -223,13 +241,13 @@ modrinth {
 
 	projectId = project.modrinth_id
 
-	uploadFile = remapJar
+	uploadFile = jar
 	versionNumber = project.version
 	versionName = "Reinforced Shulker Boxes v${project.version}"
 	versionType = "beta"
 	changelog = "[v${project.version}](https://github.com/Aton-Kish/reinforced-shulker-boxes/releases/tag/v" + java.net.URLEncoder.encode(project.version, "UTF-8") + ")"
 
-	gameVersions = ["1.21.11"]
+	gameVersions = ["26.2"]
 	loaders = ["fabric"]
 
 	dependencies {

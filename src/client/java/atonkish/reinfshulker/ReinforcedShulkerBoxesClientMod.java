@@ -1,9 +1,8 @@
 package atonkish.reinfshulker;
 
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 
 import atonkish.reinfcore.api.ReinforcedCoreClientModInitializer;
@@ -54,7 +53,7 @@ public class ReinforcedShulkerBoxesClientMod implements ReinforcedCoreClientModI
           ReinforcedShulkerBoxesMod.MOD_ID, material);
 
       // Block Entity Renderer
-      BlockEntityRendererFactories.register(
+      BlockEntityRendererRegistry.register(
           ModBlockEntityType.REINFORCED_SHULKER_BOX_MAP.get(material),
           ReinforcedShulkerBoxBlockEntityRenderer::new);
     }
