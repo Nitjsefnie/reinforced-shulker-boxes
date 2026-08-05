@@ -1,0 +1,17 @@
+{
+  "type": "reinfshulker:crafting_special_reinforcedshulkerbox",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MSM",
+    "MMM"
+  ],
+  "key": {
+    "M": "minecraft:iron_ingot",
+    "S": "reinfshulker:red_hopper_copper_shulker_box"
+  },
+  "result": {
+    "count": 1,
+    "id": "reinfshulker:red_hopper_iron_shulker_box"
+  }
+}

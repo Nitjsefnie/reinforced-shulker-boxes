@@ -37,6 +37,10 @@ public class ModItems {
   public static final Map<ReinforcingMaterial, Map<DyeColor, Item.Properties>>
       REINFORCED_SHULKER_BOX_SETTINGS_MAP = new LinkedHashMap<>();
 
+  /** Hopper-upgraded variants; parallel to {@link #REINFORCED_SHULKER_BOX_MAP}. */
+  public static final Map<ReinforcingMaterial, Map<DyeColor, Item>>
+      HOPPER_REINFORCED_SHULKER_BOX_MAP = new LinkedHashMap<>();
+
   public static Item registerMaterialDyeColor(
       ReinforcingMaterial material, DyeColor color, Item.Properties settings) {
     if (!REINFORCED_SHULKER_BOX_SETTINGS_MAP.containsKey(material)) {
@@ -66,6 +70,26 @@ public class ModItems {
     }
 
     return REINFORCED_SHULKER_BOX_MAP.get(material).get(color);
+  }
+
+  public static Item registerHopperMaterialDyeColor(
+      ReinforcingMaterial material, DyeColor color, Item.Properties settings) {
+    HOPPER_REINFORCED_SHULKER_BOX_MAP.computeIfAbsent(material, key -> new LinkedHashMap<>());
+
+    if (!HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).containsKey(color)) {
+      Item item =
+          ModItems.register(
+              ModBlocks.HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).get(color), settings);
+      CreativeModeTabEvents.modifyOutputEvent(COLORED_BLOCKS)
+          .register(content -> content.accept(item));
+      CreativeModeTabEvents.modifyOutputEvent(FUNCTIONAL_BLOCKS)
+          .register(content -> content.accept(item));
+      CreativeModeTabEvents.modifyOutputEvent(ModItemGroups.REINFORCED_STORAGE)
+          .register(content -> content.accept(item));
+      HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).put(color, item);
+    }
+
+    return HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).get(color);
   }
 
   public static void registerMaterialDyeColorItemGroupIcon(

@@ -31,11 +31,21 @@ import atonkish.reinfshulker.stat.ModStats;
 
 public class ReinforcedShulkerBoxBlock extends ShulkerBoxBlock {
   private final ReinforcingMaterial material;
+  private final boolean hopper;
 
   public ReinforcedShulkerBoxBlock(
       ReinforcingMaterial material, @Nullable DyeColor color, BlockBehaviour.Properties settings) {
+    this(material, color, false, settings);
+  }
+
+  public ReinforcedShulkerBoxBlock(
+      ReinforcingMaterial material,
+      @Nullable DyeColor color,
+      boolean hopper,
+      BlockBehaviour.Properties settings) {
     super(color, settings);
     this.material = material;
+    this.hopper = hopper;
   }
 
   @Override
@@ -86,8 +96,19 @@ public class ReinforcedShulkerBoxBlock extends ShulkerBoxBlock {
     return ModBlocks.REINFORCED_SHULKER_BOX_MAP.get(material).get(color);
   }
 
+  public static Block get(ReinforcingMaterial material, @Nullable DyeColor color, boolean hopper) {
+    return hopper
+        ? ModBlocks.HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).get(color)
+        : ModBlocks.REINFORCED_SHULKER_BOX_MAP.get(material).get(color);
+  }
+
   public ReinforcingMaterial getMaterial() {
     return this.material;
+  }
+
+  /** Whether this block moves items on its own, i.e. whether it has been hopper-upgraded. */
+  public boolean isHopper() {
+    return this.hopper;
   }
 
   public static ItemStack getItemStack(ReinforcingMaterial material, @Nullable DyeColor color) {

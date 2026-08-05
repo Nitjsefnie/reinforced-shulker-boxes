@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:hopper",
+  "base": "reinfshulker:white_diamond_shulker_box",
+  "result": {
+    "count": 1,
+    "id": "reinfshulker:white_hopper_diamond_shulker_box"
+  }
+}

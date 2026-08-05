@@ -1,7 +1,10 @@
 package atonkish.reinfshulker.integration.shulkerboxtooltip;
 
+import java.util.Map;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 
 import com.misterpemodder.shulkerboxtooltip.api.ShulkerBoxTooltipApi;
@@ -34,6 +37,16 @@ public class ShulkerBoxTooltip implements ShulkerBoxTooltipApi {
       Item[] items =
           ModItems.REINFORCED_SHULKER_BOX_MAP.get(material).values().toArray(new Item[0]);
       register(registry, namespace, id, new ReinforcedShulkerBoxPreviewProvider(material), items);
+
+      Map<DyeColor, Item> hopperItems = ModItems.HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material);
+      if (hopperItems != null) {
+        register(
+            registry,
+            namespace,
+            "hopper_" + id,
+            new ReinforcedShulkerBoxPreviewProvider(material),
+            hopperItems.values().toArray(new Item[0]));
+      }
     }
   }
 }

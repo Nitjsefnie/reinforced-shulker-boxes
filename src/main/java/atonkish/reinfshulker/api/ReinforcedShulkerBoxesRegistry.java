@@ -33,6 +33,14 @@ public class ReinforcedShulkerBoxesRegistry {
     return ModBlocks.registerMaterialDyeColor(namespace, material, color, settings);
   }
 
+  public static Block registerHopperMaterialDyeColorBlock(
+      String namespace,
+      ReinforcingMaterial material,
+      DyeColor color,
+      BlockBehaviour.Properties settings) {
+    return ModBlocks.registerHopperMaterialDyeColor(namespace, material, color, settings);
+  }
+
   public static BlockEntityType<ReinforcedShulkerBoxBlockEntity> registerMaterialBlockEntityType(
       String namespace, ReinforcingMaterial material) {
     return ModBlockEntityType.registerMaterial(namespace, material);
@@ -41,6 +49,11 @@ public class ReinforcedShulkerBoxesRegistry {
   public static Item registerMaterialDyeColorItem(
       String namespace, ReinforcingMaterial material, DyeColor color, Item.Properties settings) {
     return ModItems.registerMaterialDyeColor(material, color, settings);
+  }
+
+  public static Item registerHopperMaterialDyeColorItem(
+      String namespace, ReinforcingMaterial material, DyeColor color, Item.Properties settings) {
+    return ModItems.registerHopperMaterialDyeColor(material, color, settings);
   }
 
   public static void registerMaterialDyeColorItemGroupIcon(

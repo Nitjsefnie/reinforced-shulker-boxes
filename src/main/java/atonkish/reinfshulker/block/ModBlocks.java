@@ -21,6 +21,14 @@ public class ModBlocks {
   public static final Map<ReinforcingMaterial, Map<DyeColor, BlockBehaviour.Properties>>
       REINFORCED_SHULKER_BOX_SETTINGS_MAP = new LinkedHashMap<>();
 
+  /**
+   * Hopper-upgraded variants, kept in a map parallel to {@link #REINFORCED_SHULKER_BOX_MAP} rather
+   * than folded into it as a third key, so the existing registry API other mods call keeps its
+   * signature.
+   */
+  public static final Map<ReinforcingMaterial, Map<DyeColor, Block>>
+      HOPPER_REINFORCED_SHULKER_BOX_MAP = new LinkedHashMap<>();
+
   public static Block registerMaterialDyeColor(
       String namespace,
       ReinforcingMaterial material,
@@ -53,6 +61,30 @@ public class ModBlocks {
     }
 
     return REINFORCED_SHULKER_BOX_MAP.get(material).get(color);
+  }
+
+  public static Block registerHopperMaterialDyeColor(
+      String namespace,
+      ReinforcingMaterial material,
+      DyeColor color,
+      BlockBehaviour.Properties settings) {
+    HOPPER_REINFORCED_SHULKER_BOX_MAP.computeIfAbsent(material, key -> new LinkedHashMap<>());
+
+    if (!HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).containsKey(color)) {
+      String id =
+          color == null
+              ? "hopper_" + material.getName() + "_shulker_box"
+              : color.getName() + "_hopper_" + material.getName() + "_shulker_box";
+      Block block =
+          ModBlocks.register(
+              Identifier.fromNamespaceAndPath(namespace, id),
+              (abstractBlockSettings) ->
+                  new ReinforcedShulkerBoxBlock(material, color, true, abstractBlockSettings),
+              settings);
+      HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).put(color, block);
+    }
+
+    return HOPPER_REINFORCED_SHULKER_BOX_MAP.get(material).get(color);
   }
 
   private static Block register(

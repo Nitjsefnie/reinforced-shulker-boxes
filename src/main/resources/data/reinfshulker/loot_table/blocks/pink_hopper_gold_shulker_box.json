@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "minecraft:container",
+                "minecraft:lock",
+                "minecraft:container_loot",
+                "minecraft:enchantments",
+                "minecraft:enchantment_glint_override"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "reinfshulker:pink_hopper_gold_shulker_box"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "reinfshulker:blocks/pink_hopper_gold_shulker_box"
+}

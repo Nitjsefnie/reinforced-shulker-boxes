@@ -32,6 +32,13 @@ public class ModCauldronBehavior {
         putWaterInteraction(materialShulkerBoxMap.get(color), CLEAN_REINFORCED_SHULKER_BOX);
       }
     }
+
+    for (Map<DyeColor, Item> materialShulkerBoxMap :
+        ModItems.HOPPER_REINFORCED_SHULKER_BOX_MAP.values()) {
+      for (DyeColor color : DyeColor.values()) {
+        putWaterInteraction(materialShulkerBoxMap.get(color), CLEAN_REINFORCED_SHULKER_BOX);
+      }
+    }
   }
 
   private static void putWaterInteraction(Item item, CauldronInteraction interaction) {
@@ -59,11 +66,18 @@ public class ModCauldronBehavior {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
           } else {
             if (!world.isClientSide()) {
-              ReinforcingMaterial material = ((ReinforcedShulkerBoxBlock) block).getMaterial();
+              ReinforcedShulkerBoxBlock shulkerBox = (ReinforcedShulkerBoxBlock) block;
+              ReinforcingMaterial material = shulkerBox.getMaterial();
+              // Undyeing must stay within the same family: cleaning a hopper-upgraded box yields
+              // the
+              // undyed hopper-upgraded box, not a plain one, or a cauldron would silently strip the
+              // upgrade.
+              Map<ReinforcingMaterial, Map<DyeColor, Block>> undyedSource =
+                  shulkerBox.isHopper()
+                      ? ModBlocks.HOPPER_REINFORCED_SHULKER_BOX_MAP
+                      : ModBlocks.REINFORCED_SHULKER_BOX_MAP;
               player.setItemInHand(
-                  hand,
-                  stack.transmuteCopy(
-                      ModBlocks.REINFORCED_SHULKER_BOX_MAP.get(material).get((DyeColor) null), 1));
+                  hand, stack.transmuteCopy(undyedSource.get(material).get((DyeColor) null), 1));
               player.awardStat(ModStats.CLEAN_REINFORCED_SHULKER_BOX_MAP.get(material));
               LayeredCauldronBlock.lowerFillLevel(state, world, pos);
             }

@@ -45,9 +45,12 @@ public class ShulkerBoxBlockMixin {
       ItemStack itemStack) {
     if (blockEntity instanceof ReinforcedShulkerBoxBlockEntity) {
       ReinforcedShulkerBoxBlockEntity entity = (ReinforcedShulkerBoxBlockEntity) blockEntity;
+      // isHopper() reads the block state, so breaking a hopper-upgraded box drops the
+      // hopper-upgraded item rather than downgrading it to a plain box.
       ((ItemStackAccessor) (Object) itemStack)
           .setItem(
-              ReinforcedShulkerBoxBlock.get(entity.getMaterial(), entity.getColor())
+              ReinforcedShulkerBoxBlock.get(
+                      entity.getMaterial(), entity.getColor(), entity.isHopper())
                   .asItem()
                   .builtInRegistryHolder());
     }

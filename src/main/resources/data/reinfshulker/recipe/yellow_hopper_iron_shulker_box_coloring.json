@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "misc",
+  "group": "hopper_iron_shulker_box_dye",
+  "input": "#reinfshulker:hopper_iron_shulker_boxes",
+  "material": "minecraft:yellow_dye",
+  "result": "reinfshulker:yellow_hopper_iron_shulker_box"
+}

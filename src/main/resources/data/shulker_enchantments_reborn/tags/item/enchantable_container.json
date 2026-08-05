@@ -5,6 +5,11 @@
     "#reinfshulker:iron_shulker_boxes",
     "#reinfshulker:gold_shulker_boxes",
     "#reinfshulker:diamond_shulker_boxes",
-    "#reinfshulker:netherite_shulker_boxes"
+    "#reinfshulker:netherite_shulker_boxes",
+    "#reinfshulker:hopper_copper_shulker_boxes",
+    "#reinfshulker:hopper_iron_shulker_boxes",
+    "#reinfshulker:hopper_gold_shulker_boxes",
+    "#reinfshulker:hopper_diamond_shulker_boxes",
+    "#reinfshulker:hopper_netherite_shulker_boxes"
   ]
 }

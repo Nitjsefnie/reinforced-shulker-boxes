@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:hopper",
+  "base": "reinfshulker:purple_netherite_shulker_box",
+  "result": {
+    "count": 1,
+    "id": "reinfshulker:purple_hopper_netherite_shulker_box"
+  }
+}

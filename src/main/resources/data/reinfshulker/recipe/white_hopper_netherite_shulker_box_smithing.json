@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:netherite_ingot",
+  "base": "reinfshulker:white_hopper_diamond_shulker_box",
+  "result": {
+    "count": 1,
+    "id": "reinfshulker:white_hopper_netherite_shulker_box"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

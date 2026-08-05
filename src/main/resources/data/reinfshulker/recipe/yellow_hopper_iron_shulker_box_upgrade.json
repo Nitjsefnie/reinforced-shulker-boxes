@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "minecraft:hopper",
+  "base": "reinfshulker:yellow_iron_shulker_box",
+  "result": {
+    "count": 1,
+    "id": "reinfshulker:yellow_hopper_iron_shulker_box"
+  }
+}

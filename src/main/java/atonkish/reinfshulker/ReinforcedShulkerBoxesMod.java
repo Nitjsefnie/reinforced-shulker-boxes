@@ -78,6 +78,16 @@ public class ReinforcedShulkerBoxesMod implements ModInitializer, ReinforcedCore
         ReinforcedShulkerBoxesRegistry.registerMaterialDyeColorBlock(
             MOD_ID, material, color, materialSettings.getColorBlockSettings(color));
       }
+
+      // Hopper-upgraded Blocks: registered before the block entity type, which collects every
+      // block it is valid for.
+      ReinforcedShulkerBoxesRegistry.registerHopperMaterialDyeColorBlock(
+          MOD_ID, material, (DyeColor) null, materialSettings.getBlockSettings());
+      for (DyeColor color : DyeColor.values()) {
+        ReinforcedShulkerBoxesRegistry.registerHopperMaterialDyeColorBlock(
+            MOD_ID, material, color, materialSettings.getColorBlockSettings(color));
+      }
+
       ReinforcedShulkerBoxesRegistry.registerMaterialBlockEntityType(MOD_ID, material);
 
       // Items
@@ -85,6 +95,14 @@ public class ReinforcedShulkerBoxesMod implements ModInitializer, ReinforcedCore
           MOD_ID, material, (DyeColor) null, materialSettings.getItemSettings());
       for (DyeColor color : DyeColor.values()) {
         ReinforcedShulkerBoxesRegistry.registerMaterialDyeColorItem(
+            MOD_ID, material, color, materialSettings.getItemSettings());
+      }
+
+      // Hopper-upgraded Items
+      ReinforcedShulkerBoxesRegistry.registerHopperMaterialDyeColorItem(
+          MOD_ID, material, (DyeColor) null, materialSettings.getItemSettings());
+      for (DyeColor color : DyeColor.values()) {
+        ReinforcedShulkerBoxesRegistry.registerHopperMaterialDyeColorItem(
             MOD_ID, material, color, materialSettings.getItemSettings());
       }
     }

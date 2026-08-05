@@ -20,5 +20,12 @@ public interface ModDispenserBehavior {
         DispenserBlock.registerBehavior(item, new ShulkerBoxDispenseBehavior());
       }
     }
+
+    for (Map<DyeColor, Item> materialShulkerBoxMap :
+        ModItems.HOPPER_REINFORCED_SHULKER_BOX_MAP.values()) {
+      for (Item item : materialShulkerBoxMap.values()) {
+        DispenserBlock.registerBehavior(item, new ShulkerBoxDispenseBehavior());
+      }
+    }
   }
 }

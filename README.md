@@ -46,6 +46,41 @@ The Reinforced Shulker Boxes mod adds reinforced shulker boxes.
 
 Dyed reinforced shulker boxes can be undyed using a cauldron.
 
+### Hopper Upgrade
+
+| Name                              | Type     | Ingredients                              | Description                                            |
+| --------------------------------- | -------- | ---------------------------------------- | ------------------------------------------------------ |
+| Any Hopper Reinforced Shulker Box | Smithing | Any Reinforced Shulker Box + Hopper      | Moves items on its own. Leave the template slot empty. |
+
+A hopper-upgraded shulker box keeps its inventory size and everything else about
+its tier -- it just moves items by itself, like a hopper that holds far more.
+
+**Direction follows the box.** A shulker box remembers the face its lid opens
+out of, which is the face you placed it against. The upgraded box **pulls from
+its lid side** and **pushes out of the opposite side**. Place one lid-up on top
+of a chest and it behaves exactly like a hopper: pulling from whatever is above
+it (containers, and dropped items floating there) and pushing down into the
+chest. Place one on a wall and it moves items sideways.
+
+**Tiers move more per transfer**, rather than transferring more often -- every
+tier uses the same 8-tick interval a vanilla hopper does, so a wall of them
+costs no more ticking than a wall of hoppers:
+
+| Tier      | Items per transfer |
+| --------- | ------------------ |
+| Copper    | 1 (vanilla hopper) |
+| Iron      | 2                  |
+| Gold      | 4                  |
+| Diamond   | 8                  |
+| Netherite | a whole stack      |
+
+Like a vanilla hopper, an upgraded box stops moving items while it is powered by
+redstone.
+
+Upgraded boxes can still be dyed, undyed in a cauldron, and upgraded to the next
+tier, and all of those keep the hopper upgrade and the box's contents. Applying
+the upgrade itself also preserves contents, so a full box can be upgraded.
+
 ## Configure
 
 [The Reinforced Core lib](https://github.com/Aton-Kish/reinforced-core) has been integrated with [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) since version 3.0.0.
