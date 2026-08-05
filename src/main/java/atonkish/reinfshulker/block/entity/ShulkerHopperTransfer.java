@@ -1,5 +1,6 @@
 package atonkish.reinfshulker.block.entity;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
@@ -90,7 +91,7 @@ public final class ShulkerHopperTransfer {
     // facing.getOpposite().
     Direction insertFace = lid;
 
-    for (int slot = 0; slot < blockEntity.getContainerSize(); slot++) {
+    for (int slot : slotsByFullness(blockEntity, allSlots(blockEntity.getContainerSize()))) {
       ItemStack stack = blockEntity.getItem(slot);
       if (stack.isEmpty()) {
         continue;
@@ -133,7 +134,7 @@ public final class ShulkerHopperTransfer {
       // The face of the source that points back at us, matching vanilla suckInItems' DOWN.
       Direction takeFace = lid.getOpposite();
 
-      for (int slot : slotsFor(source, takeFace)) {
+      for (int slot : slotsByFullness(source, slotsFor(source, takeFace))) {
         ItemStack stack = source.getItem(slot);
         if (stack.isEmpty() || !canTakeThroughFace(source, stack, slot, takeFace)) {
           continue;
@@ -198,16 +199,63 @@ public final class ShulkerHopperTransfer {
     }
   }
 
+  private static int[] allSlots(int size) {
+    int[] slots = new int[size];
+    for (int i = 0; i < size; i++) {
+      slots[i] = i;
+    }
+    return slots;
+  }
+
+  /**
+   * Orders slots by how full their stack is as a fraction of what that item can stack to, fullest
+   * first, so a transfer always reaches for the most complete stack it can shift rather than
+   * whatever happens to sit in the lowest slot index.
+   *
+   * <p>Fullness is proportional, so a full 16-stackable stack (16/16) ranks equal to a full
+   * 64-stackable one (64/64) and both outrank a half-full 64 stack (32/64). Ties go to the larger
+   * absolute count, which is what makes 64 win over 16 when both are full; remaining ties keep the
+   * lower slot index so the order stays stable. Empty slots sort last -- the callers skip them, and
+   * this keeps them from displacing real candidates.
+   *
+   * <p>The comparison cross-multiplies instead of dividing: {@code count/max} as a double would
+   * make 64/64 and 16/16 compare unequal on some values, and that is precisely the case the
+   * absolute-count tiebreak is supposed to decide.
+   */
+  private static int[] slotsByFullness(Container container, int[] slots) {
+    return Arrays.stream(slots)
+        .boxed()
+        .sorted(
+            (left, right) -> {
+              ItemStack leftStack = container.getItem(left);
+              ItemStack rightStack = container.getItem(right);
+
+              if (leftStack.isEmpty() || rightStack.isEmpty()) {
+                if (leftStack.isEmpty() != rightStack.isEmpty()) {
+                  return leftStack.isEmpty() ? 1 : -1;
+                }
+                return Integer.compare(left, right);
+              }
+
+              long leftFullness = (long) leftStack.getCount() * rightStack.getMaxStackSize();
+              long rightFullness = (long) rightStack.getCount() * leftStack.getMaxStackSize();
+              if (leftFullness != rightFullness) {
+                return Long.compare(rightFullness, leftFullness);
+              }
+
+              int byCount = Integer.compare(rightStack.getCount(), leftStack.getCount());
+              return byCount != 0 ? byCount : Integer.compare(left, right);
+            })
+        .mapToInt(Integer::intValue)
+        .toArray();
+  }
+
   private static int[] slotsFor(Container container, Direction face) {
     if (container instanceof WorldlyContainer worldlyContainer) {
       return worldlyContainer.getSlotsForFace(face);
     }
 
-    int[] slots = new int[container.getContainerSize()];
-    for (int i = 0; i < slots.length; i++) {
-      slots[i] = i;
-    }
-    return slots;
+    return allSlots(container.getContainerSize());
   }
 
   private static boolean canTakeThroughFace(

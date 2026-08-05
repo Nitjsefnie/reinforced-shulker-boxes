@@ -74,6 +74,13 @@ costs no more ticking than a wall of hoppers:
 | Diamond   | 8                  |
 | Netherite | a whole stack      |
 
+**It reaches for the fullest stack first.** Rather than working through slots in
+order, each transfer picks the stack that is closest to complete as a fraction
+of what that item can stack to -- so a full stack of 16-stackable items is
+preferred over a half-full stack of 64-stackable ones. When two are equally
+full, the larger absolute stack wins, which is why a full 64 goes before a full
+16. If the neighbour refuses that stack, the next-fullest is tried, and so on.
+
 Like a vanilla hopper, an upgraded box stops moving items while it is powered by
 redstone.
 
