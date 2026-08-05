@@ -6,3 +6,16 @@
 
 # These are Windows script files and should use crlf
 *.bat           text eol=crlf
+
+# Sources and data files must use lf: spotless' googleJavaFormat step emits lf
+# unconditionally, so a crlf checkout (what git produces on Windows when
+# core.autocrlf=true wins) fails spotlessJavaCheck on every file.
+*.java          text eol=lf
+*.json          text eol=lf
+*.gradle        text eol=lf
+*.properties    text eol=lf
+*.xml           text eol=lf
+*.yaml          text eol=lf
+*.yml           text eol=lf
+*.md            text eol=lf
+*.accesswidener text eol=lf
